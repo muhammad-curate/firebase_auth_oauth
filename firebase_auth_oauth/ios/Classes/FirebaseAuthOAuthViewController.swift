@@ -53,8 +53,14 @@ public class FirebaseAuthOAuthViewController: UIViewController, FlutterPlugin {
 						FirebaseAuthOAuthPluginError
 							.FirebaseAuthError(error: firebaseError)
 					)
-				}
-				self.finalizeResult(Auth.auth().currentUser!)
+                    return
+                }
+                
+                if let currentUser = Auth.auth().currentUser {
+                    self.finalizeResult(currentUser)
+                } else {
+                    self.finalizeResult(.PluginError(error: "CurrentUser is nil"))
+                }
 			}
 		}
 		if call?.method == FirebaseAuthOAuthViewController.LINK_USER_METHOD {
